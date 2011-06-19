@@ -3,6 +3,16 @@
 Leah Xue 
 June 19th, 2011
 
+PURPOSE: 
+Given a url to a page on googleartproject.com, this script write a complete version of the image in the current working directory.
+
+It takes three arguments from commandline
+1. url. i.e. 
+2. (Optional)
+
+
+
+INSTALLATION:
 To run this, you need
 
 1. wget
@@ -21,7 +31,9 @@ from BeautifulSoup import BeautifulSoup #complicated HTML
 
 def get_id_from_page(url):
     """
-    returns (id, name)
+    get the unique identification key for each google art project url from the html source.
+    
+    return = (str)id
     """
     f = urllib2.urlopen(url)
     html = f.read()
@@ -35,7 +47,7 @@ def get_dimension_info(id):
     Google stores the dimension info for its maps in an xml file. 
     This reads the xml file containing the info and returns a dict of tuples.
     
-    return =  magnification : (x tiles, y tiles, x_border, y_border)
+    return =  (int) magnification : ((int) x tiles, (int) y tiles, (int) x_border, (int) y_border)
     """
     url = "http://lh4.ggpht.com/" + id + "=g"
     print url
@@ -53,6 +65,9 @@ def scrape_with_id(id, magnification=1,name = None):
         http://lh3.ggpht.com/94h7x8vc6reTGlTijnNZyPunwaIcim6NSl5fSsKYMVLjPCHM0O9BUnB6tg=x0-y0-z1
 
         To deal with magnification, the pictures are tiled at larger magnifications. The z# represents the dimension of the tiles.
+        
+        return = None
+        side effect = writes {name}.jpg to the current working directory
 
     """
     prefix = "http://lh3.ggpht.com/"
@@ -124,11 +139,12 @@ def main():
     try:
         magnification = int(sys.argv[2])
     except:
-        magnification = 3 #big enough for most monitors
+        #big enough for most monitors, and exists for most pictures.
+        #TODO: This can and should be done more intelligently by getting the dimensions matrix first.
+        magnification = 3  
         
-    # implement more intelligent options
+    # TODO: implement more intelligent options
     # http://docs.python.org/library/getopt.html
-
     scrape_with_id(id,magnification,name)
 
 if __name__ == "__main__":
