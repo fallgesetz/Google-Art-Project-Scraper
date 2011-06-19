@@ -64,6 +64,12 @@ def get_museum_urls():
     return total_urls
 
 def scrape_all():
+    """
+    this function will execute ./imagescraper.py <given_url>
+    
+    TODO: modify imagescraper.py to take a directory option
+    """
+    pass
     
 def main():
     blah = get_museum_urls()
